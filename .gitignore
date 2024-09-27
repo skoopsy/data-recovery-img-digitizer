@@ -1,0 +1,20 @@
+[General dir for excluded files]
+gitexclude/*
+
+[OS Files]
+.DS_Store
+.idea/*
+
+[Data Files]
+*.mat
+*.json
+*.csv
+test_files/*
+plots/*
+
+[experiment files]
+exp_*
+
+[Python]
+*/__pycache__/*
+modules/__pycache__/*
