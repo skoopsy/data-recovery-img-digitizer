@@ -40,19 +40,26 @@ for f_path in img_files:
     #print(f"{f_path}: {tesseract_output}")
 
     # Strip characters from tesseract_output for spellchecker
-    tesseract_output = tesseract_output.strip()
+    #tesseract_output = tesseract_output.strip()
 
-    # Run spellcheck on tesseract output
-    spell = SpellChecker()  # Init spellcheck class with default word frequency list
-    spell_check_unknown = spell.unknown([tesseract_output])
-    # If tesseract cannot find a word:
-    if not tesseract_output:
-        print(f"{f_path}: Cannot find a word")
-    # If word spelled correctly:
-    elif not spell_check_unknown:
-        print(f"{f_path}: Word found with a correct spelling: {tesseract_output}")
-    # If word spelled incorrectly:
-    else:
-        word_correction = spell.correction(tesseract_output)
-        print(f"{f_path}: Word with incorrect spelling or no word: {tesseract_output} - Suggested Word: {word_correction}")
+    # Split output sentence into word list
+    tesseract_output = tesseract_output.split()
+    #print(tesseract_output)
+
+    for word in tesseract_output:
+
+        # Run spellcheck on tesseract output
+        spell = SpellChecker()  # Init spellcheck class with default word frequency list
+        spell_check_unknown = spell.unknown([word])
+        # If tesseract cannot find a word:
+        if not tesseract_output:
+            print(f"{f_path}: Cannot find a word")
+        # If word spelled correctly:
+        elif not spell_check_unknown:
+            print(f"{f_path}: Word found with a correct spelling: {word}")
+        # If word spelled incorrectly:
+        else:
+            word_correction = spell.correction(word)
+            print(f"{f_path}: Word with incorrect spelling: {word} - "
+                  f"Suggested Word: {word_correction}")
 
