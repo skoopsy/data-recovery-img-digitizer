@@ -4,7 +4,7 @@ import cv2  # opencv-python
 import pytesseract
 from spellchecker import SpellChecker
 
-input_directory = "gitexclude/example_imgs"
+input_directory = "gitexclude/example_imgs/pre-processed-1"
 img_type = ".png"
 
 # Get valid image paths from dir
