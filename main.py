@@ -4,33 +4,34 @@ import cv2  # opencv-python
 import pytesseract
 from spellchecker import SpellChecker
 
-input_directory = "gitexclude/example_imgs/pre-processed-1"
+input_directory_print = "gitexclude/example_imgs/printed/pre-processed-1"
+input_directory_hand = "gitexclude/example_imgs/hand/unprocessed"
 img_type = ".png"
 
 # Get valid image paths from dir
-img_files = []
-for file in os.listdir(input_directory):
-    f_path = os.path.join(input_directory, file)
+img_files_print = []
+for file in os.listdir(input_directory_print):
+    f_path = os.path.join(input_directory_print, file)
 
     # Check if file as opposed to a dir
     if os.path.isfile(f_path):
         # Check if file has img_type extension:
         if file.endswith(img_type):
             print(f"Added: {file}")
-            img_files.append(f_path)
+            img_files_print.append(f_path)
 
         else:
             print(f"{file} is not of type: {img_type}")
     else:
         print(f"{file} is not a file")
 
-print(img_files)
+print(img_files_print)
 
 # Load images and process with tesseract:
 print(" ")
 print("Analysing image text")
 print(20*"=")
-for f_path in img_files:
+for f_path in img_files_print:
     # Load img
     img = cv2.imread(f_path)
 
@@ -62,4 +63,5 @@ for f_path in img_files:
             word_correction = spell.correction(word)
             print(f"{f_path}: Word with incorrect spelling: {word} - "
                   f"Suggested Word: {word_correction}")
+
 
