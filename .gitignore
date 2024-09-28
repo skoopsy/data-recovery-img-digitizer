@@ -4,6 +4,7 @@ gitexclude/*
 [OS Files]
 .DS_Store
 .idea/*
+*.swp
 
 [Data Files]
 *.mat
@@ -11,6 +12,7 @@ gitexclude/*
 *.csv
 test_files/*
 plots/*
+*.png
 
 [experiment files]
 exp_*
