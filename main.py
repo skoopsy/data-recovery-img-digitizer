@@ -4,6 +4,16 @@ import cv2  # opencv-python
 import pytesseract
 from spellchecker import SpellChecker
 
+import keras_ocr
+import tensorflow as tf
+import matplotlib.pyplot as plt
+import numpy as np
+
+import easyocr
+import cv2
+import re
+
+
 input_directory_print = "gitexclude/example_imgs/printed/pre-processed-1"
 input_directory_hand = "gitexclude/example_imgs/hand/unprocessed"
 img_type = ".png"
@@ -64,4 +74,46 @@ for f_path in img_files_print:
             print(f"{f_path}: Word with incorrect spelling: {word} - "
                   f"Suggested Word: {word_correction}")
 
+"""
+# Keras auto download pretrained weights for detector and recognizer
+pipeline = keras_ocr.pipeline.Pipeline()
+
+# Load the image
+image = keras_ocr.tools.read(input_directory_hand)
+
+# Perform OCR
+prediction_groups = pipeline.recognize([image])
+
+# Visualize results
+keras_ocr.tools.drawAnnotations(image=image, predictions=prediction_groups[0])
+"""
+# EasyOCR
+# Load OCR reader, exclude gpu for now
+reader = easyocr.Reader(['en'])  #gpu=False
+
+# Execute OCR on an image
+image = ("gitexclude/testing-handwritten/img2.png")
+result = reader.readtext(image, allowlist="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+                         rotation_info=1)
+img = cv2.imread(image)
+
+# Iterate over the OCR results
+for res in result:
+    print(res)
+    # Get the bounding box coordinates, convert to integers
+    top_left = tuple(map(int, res[0][0]))
+    bottom_right = tuple(map(int, res[0][2]))
+
+    # Extract and clean the text
+    text = re.sub(r"""[."'}]""", "", res[1])
+
+    # Define font and put a rectangle and text on the image
+    font = cv2.FONT_HERSHEY_SIMPLEX
+    img = cv2.rectangle(img, top_left, bottom_right, (0, 255, 100), 2)
+    img = cv2.putText(img, text, bottom_right, font, 1.5, (0, 255, 0), 4, cv2.LINE_AA)
+
+# Display the image
+plt.figure(figsize=(10, 10))
+plt.imshow(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
+plt.show()
 
